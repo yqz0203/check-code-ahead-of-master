@@ -76,19 +76,21 @@ function hasOrigin() {
  * 检查master分支
  */
 async function checkMaster() {
-  logger.log('> 获取最新git信息\n');
-
-  const res = spawnSync('git', ['fetch']);
-
-  if (res.status) {
-    throwCode(res.status);
-  }
-
-  logger.log(`> 检查当前分支代码\n`);
-
   const branchName = await getCurrentBranchName();
 
   logger.log(`> 所在分支: ${branchName}\n`);
+
+  if (hasOrigin()) {
+    logger.log('> 获取最新git信息\n');
+
+    const res = spawnSync('git', ['fetch']);
+
+    if (res.status) {
+      throwCode(res.status);
+    }
+  } else {
+    logger.log(`> 仓库未关联远端，跳过 fetch 阶段\n`);
+  }
 
   const masterName = hasOrigin() ? 'origin/master' : 'master';
 
@@ -103,7 +105,12 @@ async function checkMaster() {
   const log = stdout.toString();
 
   if (log) {
-    logger.warn(log.split(/\r\n|\n/).splice(0, 20).join('\n') + '...\n');
+    logger.warn(
+      log
+        .split(/\r\n|\n/)
+        .splice(0, 20)
+        .join('\n') + '...\n'
+    );
     logger.error(
       `> 当前分支并未包含${masterName}全部代码，请合并后进行操作🙃🙃\n`
     );
