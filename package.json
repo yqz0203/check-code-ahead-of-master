@@ -1,0 +1,20 @@
+{
+  "name": "check-code-ahead-of-master",
+  "version": "0.0.1",
+  "description": "Check whether current branch code ahead of master before building",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "ccaom": "./index.js"
+  },
+  "engines": {
+    "node": ">=8.9.4"
+  },
+  "author": "yqz0203@hotmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^2.4.1"
+  }
+}
