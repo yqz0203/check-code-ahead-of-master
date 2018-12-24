@@ -10,6 +10,7 @@
     "git",
     "branch"
   ],
+  "homepage": "https://github.com/yqz0203/check-code-ahead-of-master",
   "bin": {
     "ccaom": "./index.js"
   },
