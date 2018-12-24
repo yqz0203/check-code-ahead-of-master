@@ -98,7 +98,10 @@ async function checkMaster() {
 
   const masterName = hasOrigin() ? 'origin/master' : 'master';
 
-  const res2 = spawnSync('git', `log ${name}..${masterName}`.split(' '));
+  const res2 = spawnSync(
+    'git',
+    `log ${name}..${masterName} --oneline --decorate`.split(' ')
+  );
 
   const { stdout, stderr } = res2;
 
@@ -109,14 +112,14 @@ async function checkMaster() {
   const log = stdout.toString();
 
   if (log) {
+    const logArr = log.split(/\r\n|\n/);
     logger.warn(
-      log
-        .split(/\r\n|\n/)
-        .splice(0, 20)
-        .join('\n') + '...\n'
+      logArr.splice(0, 10).join('\n') + (logArr.length > 10 ? '\n...\n' : '')
     );
     logger.error(
-      `> 当前分支并未包含${masterName}全部代码，请合并后进行操作🙃🙃\n`
+      `> 当前分支落后${masterName}分支${
+        logArr.length
+      }次提交，请合并后进行操作🙃🙃\n`
     );
     process.exit(1);
     return;
