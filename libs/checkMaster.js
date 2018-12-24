@@ -76,7 +76,11 @@ function hasOrigin() {
  * 检查master分支
  */
 async function checkMaster() {
-  const branchName = await getCurrentBranchName();
+  let branchName = await getCurrentBranchName();
+  let name = branchName;
+
+  // 从commit或者tag检出
+  name = name.replace(/^\(HEAD detached at (.*)\)$/i, '$1');
 
   logger.log(`> 所在分支: ${branchName}\n`);
 
@@ -94,7 +98,7 @@ async function checkMaster() {
 
   const masterName = hasOrigin() ? 'origin/master' : 'master';
 
-  const res2 = spawnSync('git', `log ${branchName}..${masterName}`.split(' '));
+  const res2 = spawnSync('git', `log ${name}..${masterName}`.split(' '));
 
   const { stdout, stderr } = res2;
 
