@@ -112,14 +112,13 @@ async function checkMaster() {
   const log = stdout.toString();
 
   if (log) {
-    const logArr = log.split(/\r\n|\n/);
+    const logArr = log.split(/\r\n|\n/).filter(item => item.trim());
+    const length = logArr.length;
     logger.warn(
       logArr.splice(0, 10).join('\n') + (logArr.length > 10 ? '\n...\n' : '')
     );
     logger.error(
-      `> 当前分支落后${masterName}分支${
-        logArr.length
-      }次提交，请合并后进行操作🙃🙃\n`
+      `> 当前分支落后${masterName}分支${length}次提交，请合并后进行操作🙃🙃\n`
     );
     process.exit(1);
     return;
